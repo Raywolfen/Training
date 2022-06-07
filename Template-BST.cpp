@@ -378,6 +378,46 @@ public:
 		}
 
 	}
+	
+	T findMin(Node<T>* root) {
+		T min = root->data;
+		while (root->left != nullptr) {
+			min = root->left->data;
+			root = root->left;
+		}
+		return min;
+	}
+
+	Node<T>* deleteNode(Node<T>* root, T data) {
+		if (root == nullptr)
+			return root;
+
+		if (data < root->data) {
+			root->left = deleteNode(root->left, data);
+		}
+		else if (data > root->data) {
+			root->right = deleteNode(root->right, data);
+		}
+		else {
+			if (root->left == nullptr&&root->right ==nullptr) {
+				delete root;
+				root = nullptr;
+				return root;
+			}
+			else if (root->left == nullptr) {
+				return root->right;
+			}
+			else if (root->right == nullptr) {
+				return root->left;
+			}
+			else {
+				root->data = findMin(root->right);
+				root->right = deleteNode(root->right, root->data);
+			}
+
+			
+		}return root;
+	}
 };
 
 int main() {
@@ -393,8 +433,9 @@ int main() {
 	ob.root = ob.insertNode(82, ob.root);
 	ob.root = ob.insertNode(66, ob.root);
 	ob.root = ob.insertNode(19, ob.root);
-	//ob.inorder(ob.root);
-	cout << ob.findLevel(19, ob.root);
+	ob.root = ob.deleteNode(ob.root,45);
+	ob.inorder(ob.root);
+	//cout << ob.findLevel(19, ob.root);
 
 	/*
 	cout << endl;
